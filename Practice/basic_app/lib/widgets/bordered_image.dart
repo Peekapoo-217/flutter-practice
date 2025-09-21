@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 
 class BorderedImage extends StatelessWidget {
-  final String imageUrl;
-  
+  final String imagePath;
+  final double size;
+  final bool isNetworkImage;
+
   const BorderedImage({
-    super.key,
-    required this.imageUrl,
-  });
+    Key? key, 
+    required this.imagePath,
+    this.size = 50,
+    this.isNetworkImage = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
-      height: 200,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue, width: 2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(6),
-        child: Image.network(
-          imageUrl,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.blue, width: 3),
+        image: DecorationImage(
+          image: isNetworkImage 
+              ? NetworkImage(imagePath) as ImageProvider
+              : AssetImage(imagePath),
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => Container(
-            color: Colors.grey[200],
-            child: const Icon(Icons.image_not_supported, size: 50),
-          ),
         ),
       ),
     );
